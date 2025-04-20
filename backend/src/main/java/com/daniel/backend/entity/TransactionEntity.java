@@ -15,6 +15,10 @@ public class TransactionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private CategoryEntity category;
+
     @Column(name = "\"value\"")
     private BigDecimal value;
 
