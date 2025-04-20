@@ -1,10 +1,13 @@
 package com.daniel.backend.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
 import com.daniel.backend.entity.TransactionEntity;
 import com.daniel.backend.repository.TransactionRepository;
 
@@ -15,6 +18,16 @@ public class Transactionservice {
 
     public Transactionservice(TransactionRepository transactionRepo) {
         this.transactionRepo = transactionRepo;
+    }
+
+    // Pesquisar como funciona
+    public List<TransactionEntity> filtersTransactions(String category, BigDecimal value) { 
+        return transactionRepo.findAll().stream()
+        .filter(t -> category == null || 
+                     (t.getCategory() != null && 
+                      t.getCategory().getName().equalsIgnoreCase(category)))
+        .filter(t -> value == null || value.compareTo(t.getValue()) == 0)
+        .collect(Collectors.toList());
     }
 
     public List<TransactionEntity> listTransactions() {

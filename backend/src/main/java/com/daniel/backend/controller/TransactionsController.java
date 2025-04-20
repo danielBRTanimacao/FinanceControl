@@ -1,5 +1,6 @@
 package com.daniel.backend.controller;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,14 @@ public class TransactionsController {
 
     public TransactionsController(Transactionservice transactionServ) {
         this.transactionServ = transactionServ;
+    }
+
+    @GetMapping("/dashboard")
+    public List<TransactionEntity> dashboard(
+        @RequestParam(required = false) String category,
+        @RequestParam(required = false) BigDecimal value
+    ) {
+        return transactionServ.filtersTransactions(category, value);
     }
 
     @GetMapping("/transactions")
