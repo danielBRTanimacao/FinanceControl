@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
@@ -17,6 +19,8 @@ public class TransactionEntity {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @NotNull(message = "Categoria é obrigatoria")
+    @Valid
     private CategoryEntity category;
 
     @Column(name = "\"value\"")

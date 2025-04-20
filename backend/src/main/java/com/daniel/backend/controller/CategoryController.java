@@ -2,11 +2,14 @@ package com.daniel.backend.controller;
 
 import java.util.List;
 
-import org.springframework.validation.annotation.Validated;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.daniel.backend.entity.CategoryEntity;
 import com.daniel.backend.service.CategoryService;
+
+import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/api")
@@ -24,7 +27,18 @@ public class CategoryController {
     }
 
     @PostMapping("/category")
-    public CategoryEntity createCategories(@Validated @RequestBody CategoryEntity category) {
-        return categoryServ.createCategory(category);
+    public ResponseEntity<CategoryEntity> createCategories(@Valid @RequestBody CategoryEntity category) {
+        CategoryEntity saved = categoryServ.createCategory(category);
+        return ResponseEntity.ok(saved);
+    }
+
+    @PutMapping("/category/{id}")
+    public ResponseEntity<CategoryEntity> updateSpecificCategory(@PathVariable Long id, @RequestBody CategoryEntity entity) {
+        return categoryServ.updateCategory(id, entity);
+    }
+
+    @DeleteMapping("/category/{id}")
+    public ResponseEntity<CategoryEntity> delSpecificCategory(@PathVariable Long id ) {
+        return categoryServ.deleteCategory(id);
     }
 }
