@@ -2,6 +2,8 @@ package com.daniel.backend.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
@@ -15,6 +17,7 @@ public class UserEntity {
     private Long id;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<TransactionEntity> transactions;
 
     @NotBlank(message = "name não pode estar vazio!")
