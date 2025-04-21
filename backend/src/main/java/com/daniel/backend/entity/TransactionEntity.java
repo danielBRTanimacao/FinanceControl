@@ -23,6 +23,10 @@ public class TransactionEntity {
     @Valid
     private CategoryEntity category;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserEntity user;
+
     @Column(name = "\"value\"")
     private BigDecimal value;
 
