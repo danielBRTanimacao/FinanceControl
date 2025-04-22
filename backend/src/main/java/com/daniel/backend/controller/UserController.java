@@ -24,10 +24,5 @@ public class UserController {
     public UserEntity createUserEntity(@RequestBody UserEntity entity) {
         return userService.createUser(entity);
     }
-
-    /*@PostMapping("/login")
-    public UserEntity createUserEntity(@RequestBody UserEntity entity) {
-        return userService.createUser(entity);
-    }*/
     
 }
