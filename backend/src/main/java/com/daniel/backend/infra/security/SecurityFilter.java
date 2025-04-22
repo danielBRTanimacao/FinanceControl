@@ -20,7 +20,6 @@ import jakarta.servlet.http.*;
 public class SecurityFilter extends OncePerRequestFilter{
     @Autowired
     TokenService tokenService;
-
     @Autowired
     UserRepository userRepo;
 
@@ -29,7 +28,7 @@ public class SecurityFilter extends OncePerRequestFilter{
         var token = this.recoverToken(request);
         var login = tokenService.validateToken(token);
 
-        if(login != null){
+        if(login != null) {
             UserEntity user = userRepo.findByEmail(login).orElseThrow(() -> new RuntimeException("User Not Found"));
             var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
             var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
