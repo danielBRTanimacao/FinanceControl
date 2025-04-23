@@ -3,6 +3,9 @@ package com.daniel.backend.controller;
 import com.daniel.backend.entity.UserEntity;
 import com.daniel.backend.service.UserService;
 
+import java.util.Optional;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,8 +24,12 @@ public class UserController {
     
 
     @PostMapping("/register")
-    public UserEntity createUserEntity(@RequestBody UserEntity entity) {
+    public ResponseEntity<Optional<UserEntity>> createUserEntity(@RequestBody UserEntity entity) {
         return userService.createUser(entity);
     }
-    
+
+    @PostMapping("/login")
+    public ResponseEntity<UserEntity> loginUserEntity(@RequestBody UserEntity entity) {
+        return userService.loginUser(entity);
+    }
 }
