@@ -17,21 +17,19 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 
 @Component
-public class SecurityFilter extends OncePerRequestFilter{
+public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     TokenService tokenService;
     @Autowired
-    UserRepository userRepo;
+    UserRepository userRepository;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) 
-        throws ServletException, IOException {
-            
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         var token = this.recoverToken(request);
         var login = tokenService.validateToken(token);
 
-        if(login != null) {
-            UserEntity user = userRepo.findByEmail(login).orElseThrow(() -> new RuntimeException("User Not Found"));
+        if(login != null){
+            UserEntity user = userRepository.findByEmail(login).orElseThrow(() -> new RuntimeException("User Not Found"));
             var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
             var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -39,9 +37,9 @@ public class SecurityFilter extends OncePerRequestFilter{
         filterChain.doFilter(request, response);
     }
 
-    private String recoverToken(HttpServletRequest request) {
+    private String recoverToken(HttpServletRequest request){
         var authHeader = request.getHeader("Authorization");
         if(authHeader == null) return null;
-        return authHeader.replace("Bearer", "");
+        return authHeader.replace("Bearer ", "");
     }
 }

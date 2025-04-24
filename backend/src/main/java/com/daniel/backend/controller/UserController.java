@@ -1,9 +1,8 @@
 package com.daniel.backend.controller;
 
-import com.daniel.backend.entity.UserEntity;
+import com.daniel.backend.DTO.LoginRequestDTO;
+import com.daniel.backend.DTO.RegisterRequestDTO;
 import com.daniel.backend.service.UserService;
-
-import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,20 +15,16 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-
-    @GetMapping("/me/{id}")
-    public UserEntity getUserInfos(@PathVariable Long id) {
-        return userService.getInfos(id);
-    }
     
-
+    @SuppressWarnings("rawtypes")
     @PostMapping("/register")
-    public ResponseEntity<Optional<UserEntity>> createUserEntity(@RequestBody UserEntity entity) {
+    public ResponseEntity createUserEntity(@RequestBody RegisterRequestDTO entity) {
         return userService.createUser(entity);
     }
 
+    @SuppressWarnings("rawtypes")
     @PostMapping("/login")
-    public ResponseEntity<UserEntity> loginUserEntity(@RequestBody UserEntity entity) {
+    public ResponseEntity loginUserEntity(@RequestBody LoginRequestDTO entity) {
         return userService.loginUser(entity);
     }
 }
