@@ -18,6 +18,7 @@ public class TokenService {
 
     public String generateToken(UserEntity user) {
         try {
+            // Coleta a info cria um hash uma chave privada
             Algorithm algorithm = Algorithm.HMAC256(secret);
 
             String token = JWT.create()
@@ -25,7 +26,7 @@ public class TokenService {
                 .withSubject(user.getEmail())
                 .withExpiresAt(this.generateExpirationDate())
                 .sign(algorithm);
-            
+        
             return token;
         } catch (JWTCreationException e) {
             throw new RuntimeException("Error while authenticating");
