@@ -17,6 +17,12 @@ public class UserController {
     }
     
     @SuppressWarnings("rawtypes")
+    @PostMapping("/me")
+    public ResponseEntity infosUser() {
+        return userService.getUserInfos();
+    }
+
+    @SuppressWarnings("rawtypes")
     @PostMapping("/register")
     public ResponseEntity createUserEntity(@RequestBody RegisterRequestDTO entity) {
         return userService.createUser(entity);
