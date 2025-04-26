@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="./logo.svg" height="300" width="300" alt="Logo Finance Control" /><br>
+  <img src="./imgs/logo.svg" height="300" width="300" alt="Logo Finance Control" /><br>
   Finance Control
 </h1>
 
@@ -8,7 +8,7 @@
 
 Já aconteceu de dia 5 ou dia 15 acordar felizão com o salário na conta e não ter ideia de onde foi cada centavo dois dias depois? Aqui é onde o Finance Control entra em ação! Com ele você consegue controlar suas finanças - literalmente - rastreando onde vai cada real através de transações cadastradas na plataforma: coloque o dia que seu salário caiu, registre cada compra ou investimento que fizer e tenha de forma visível o seu fluxo de caixa, simples como torrar todo o seu dinheiro...
 
-## Stack
+## Stack 🛠️
 
 ![Java](https://img.shields.io/badge/Java-ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
 
@@ -18,32 +18,16 @@ Já aconteceu de dia 5 ou dia 15 acordar felizão com o salário na conta e não
 
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
 
-<!-- ![Nginx](https://img.shields.io/badge/nginx-009639.svg?style=for-the-badge&logo=nginx&logoColor=white) -->
-<!-- ![Apache Tomcat](https://img.shields.io/badge/apache%20tomcat-F8DC75.svg?style=for-the-badge&logo=apache-tomcat&logoColor=black) -->
-
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
-
-<!-- ![JUnit5](https://img.shields.io/badge/JUnit5-dc524a?style=for-the-badge&logo=JUnit5&logoColor=ffffff) -->
-
-<!-- ![Docker](https://img.shields.io/badge/Docker-2CA5E0?style=for-the-badge&logo=docker&logoColor=white) -->
-<!-- ![Render](https://img.shields.io/badge/Render-46E3B7?style=for-the-badge&logo=render&logoColor=000&color=fff) -->
-<!-- ![Vercel](https://img.shields.io/badge/vercel-000000.svg?style=for-the-badge&logo=vercel&logoColor=white) -->
-<!-- ![Netlify](https://img.shields.io/badge/netlify-000000.svg?style=for-the-badge&logo=netlify&logoColor=#00C7B7) -->
-<!-- ![Heroku](https://img.shields.io/badge/heroku-430098.svg?style=for-the-badge&logo=heroku&logoColor=white) -->
-<!-- ![Firebase](https://img.shields.io/badge/firebase-ffaa00.svg?style=for-the-badge&logo=firebase&logoColor=ff0000) -->
-<!-- ![Supabase](https://img.shields.io/badge/Supabase-181818?style=for-the-badge&logo=supabase&logoColor=3ecf8e) -->
-
-<!-- ![CodeCov](https://img.shields.io/badge/codecov-ff0077.svg?style=for-the-badge&logo=codecov&logoColor=white) -->
-<!-- ![Swagger](https://img.shields.io/badge/Swagger-004400?style=for-the-badge&logo=swagger&logoColor=00ff00) -->
 
 ![GitHub](https://img.shields.io/badge/GitHub-fff?style=for-the-badge&logo=github&logoColor=181717)
 ![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088ff?style=for-the-badge&logo=github-actions&logoColor=fff)
 
-## Arquitetura
+## Arquitetura 📊
 
 A arquitetura escolhida para o projeto quanto à nivel de repositório foi a de "monorepo", onde o projeto se divide em duas ou mais estruturas (diretórios) diferentes mas dentro do mesmo repositório. É possível observar os diretórios `backend/` e `frontend/` dentro deste repositório, e isso caracteriza a estrutura monorepo.
 
-### Front-End
+### Front-End 🌞
 
 Quanto ao diretório `frontend/` a escolha - deveras polêmica, com manipulação de votação - foi o Vue, que é um framework progressivo para construção de interfaces web reativas. Sua arquitetura é baseada no padrão MVVM (Model-View-ViewModel), promovendo separação de responsabilidades e reatividade declarativa.
 
@@ -95,7 +79,7 @@ linkStyle 0,1,2,3,4 stroke:#42b883,color:#fff
 linkStyle 5,6,7,8,9 stroke:#2288a3,color:#fff
 ```
 
-### Back-End
+### Back-End 🌚
 
 A nível de projeto, o diretório `backend/` apresenta a estrutura padrão do Spring com Java; O Spring é um framework modular e extensível, amplamente utilizado no desenvolvimento de aplicações Java corporativas. Sua arquitetura é baseada em princípios como Inversão de Controle (IoC), Injeção de Dependência (DI) e Programação Orientada a Aspectos (AOP), promovendo alta coesão, baixo acoplamento e fácil testabilidade.
 
@@ -143,6 +127,7 @@ linkStyle 0,1,2,3,4 stroke:#ff7820,color:#fff
 linkStyle 5,6,7,8,9 stroke:#070,color:#fff
 ```
 
+<!--
 ## Execução
 
 Antes de iniciar com o desenvolvimento e os comandos, é importante definir as variáveis de ambiente no seu ambiente de desenvolvimento. Abaixo a listagem de quais definir:
@@ -153,7 +138,7 @@ Antes de iniciar com o desenvolvimento e os comandos, é importante definir as v
 
 ### Front-End
 
-<!--
+
 LISTA DE POSSÍVEIS AÇÕES
 
 Linter
@@ -164,7 +149,7 @@ Atualizar Estrutura do Banco de Dados com Novas Migrações
 Iniciar Testes Automatizados
 Popular Banco de Dados para Execução Local
 Iniciar o Servidor
- -->
+
 
 #### Ação
 
@@ -178,9 +163,10 @@ Iniciar o Servidor
 
 ## To-Do List
 
-- [ ] Lista
-- [ ] de
-- [ ] Tarefas
+-   [ ] Lista
+-   [ ] de
+-   [ ] Tarefas
+-->
 
 ## Licença
 
