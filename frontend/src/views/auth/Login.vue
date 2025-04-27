@@ -1,12 +1,14 @@
 <script>
 import MailIcon from "../../assets/imgs/icons/icon-mail.png";
 import PasswordIcon from "../../assets/imgs/icons/icon-password.png";
+import PasswordIconUnlock from "../../assets/imgs/icons/icon-unlock.png";
 
 export default {
     data() {
         return {
             icon: MailIcon,
             iconPassword: PasswordIcon,
+            iconUnlock: PasswordIconUnlock,
             showPassword: false,
         };
     },
@@ -73,7 +75,9 @@ export default {
                                 class="absolute rounded-full top-1 left-1 w-8 h-8 cursor-pointer bg-gray-200 flex items-center justify-center"
                             >
                                 <img
-                                    :src="iconPassword"
+                                    :src="
+                                        showPassword ? iconUnlock : iconPassword
+                                    "
                                     alt="img-icon-password"
                                 />
                             </label>
