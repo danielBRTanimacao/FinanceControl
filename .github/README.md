@@ -1,7 +1,5 @@
-<h1 align="center">
-  <img src="./imgs/logo.svg" height="300" width="300" alt="Logo Finance Control" /><br>
-  Finance Control
-</h1>
+<img src="./imgs/financeControlLogo.png" alt="Logo Finance Control" />
+<hr/>
 
 ![GitHub License](https://img.shields.io/github/license/danielBRTanimacao/FinanceControl?labelColor=101010)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/danielBRTanimacao/FinanceControl/XXXXXX.yml?style=flat&labelColor=101010)
