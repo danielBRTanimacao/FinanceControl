@@ -102,7 +102,6 @@ export default {
                         </button>
                     </div>
                 </article>
-
                 <p class="errorsForm"></p>
             </div>
         </form>

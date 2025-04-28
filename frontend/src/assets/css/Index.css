@@ -41,14 +41,7 @@
 
 @media (width >= 80rem) {
     .mainForm {
-        background-image: url("../imgs/icons/bg-big.png");
-        background-size: contain;
-    }
-}
-
-@media (width >= 96rem) {
-    .mainForm {
         background-image: url("../imgs/icons/bg-larger.png");
-        background-size: contain;
+        background-size: cover;
     }
 }
