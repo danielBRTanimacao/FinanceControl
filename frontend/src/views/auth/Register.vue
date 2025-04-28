@@ -1,22 +1,45 @@
 <script>
+import PersonIcon from "../../assets/imgs/icons/icon-person.png";
 import MailIcon from "../../assets/imgs/icons/icon-mail.png";
 import PasswordIcon from "../../assets/imgs/icons/icon-password.png";
 import PasswordIconUnlock from "../../assets/imgs/icons/icon-unlock.png";
 
+import axios from "axios";
+
 export default {
     data() {
         return {
+            iconPerson: PersonIcon,
             icon: MailIcon,
             iconPassword: PasswordIcon,
             iconUnlock: PasswordIconUnlock,
             showPassword: false,
+            newUser: {
+                username: "",
+                email: "",
+                password: "",
+            },
+            errorMsg: "",
         };
     },
     methods: {
         togglePassword() {
             this.showPassword = !this.showPassword;
         },
-        submitRegisterForm() {},
+        async submitRegisterForm() {
+            try {
+                const response = await axios.post(
+                    "http://127.0.0.1:8080/api/auth/register",
+                    this.newUser
+                );
+                this.errorMsg = `Seja bem vindo ${this.newUser.username}`;
+                console.log(response);
+                // redirecionar o user
+            } catch (error) {
+                this.errorMsg =
+                    error.response?.data?.message || "Houve um equivoco";
+            }
+        },
     },
 };
 </script>
@@ -55,12 +78,31 @@ export default {
                     <aside class="flex flex-col gap-5">
                         <div class="relative">
                             <label
+                                for="inputName"
+                                class="rounded-full absolute top-1 left-1 w-8 h-8 cursor-pointer bg-gray-200 flex items-center justify-center"
+                            >
+                                <img :src="iconPerson" alt="img-icon-email" />
+                            </label>
+                            <input
+                                v-model="newUser.username"
+                                type="text"
+                                name="name"
+                                id="inputName"
+                                class="indent-10 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                                placeholder="Seu nome"
+                                required
+                                maxlength="255"
+                            />
+                        </div>
+                        <div class="relative">
+                            <label
                                 for="inputEmail"
                                 class="rounded-full absolute top-1 left-1 w-8 h-8 cursor-pointer bg-gray-200 flex items-center justify-center"
                             >
                                 <img :src="icon" alt="img-icon-email" />
                             </label>
                             <input
+                                v-model="newUser.email"
                                 type="email"
                                 name="email"
                                 id="inputEmail"
@@ -85,6 +127,7 @@ export default {
                             </label>
                             <input
                                 :type="showPassword ? 'text' : 'password'"
+                                v-model="newUser.password"
                                 name="password"
                                 id="inputPassword"
                                 class="indent-10 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
@@ -97,14 +140,14 @@ export default {
 
                     <div class="pt-5">
                         <button
-                            class="w-full py-3 bg-white rounded-full text-gray-500"
+                            class="w-full py-3 bg-white rounded-full text-gray-500 cursor-pointer"
                             type="submit"
                         >
-                            Entrar
+                            Criar
                         </button>
                     </div>
                 </article>
-                <p class="errorsForm"></p>
+                <p class="errorsForm">{{ errorMsg }}</p>
             </div>
         </form>
     </main>
