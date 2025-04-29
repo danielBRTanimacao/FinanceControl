@@ -1,5 +1,6 @@
-<img src="./imgs/financeControlLogo.png" alt="Logo Finance Control" />
-<hr/>
+![Logo Finance Control](./imgs/financeControlLogo.png)
+
+---
 
 ![GitHub License](https://img.shields.io/github/license/danielBRTanimacao/FinanceControl?labelColor=101010)
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/danielBRTanimacao/FinanceControl/XXXXXX.yml?style=flat&labelColor=101010)
@@ -27,15 +28,15 @@ A arquitetura escolhida para o projeto quanto à nivel de repositório foi a de 
 
 ### Front-End 🌞
 
-Quanto ao diretório `frontend/` a escolha - deveras polêmica, com manipulação de votação - foi o Vue, que é um framework progressivo para construção de interfaces web reativas. Sua arquitetura é baseada no padrão MVVM (Model-View-ViewModel), promovendo separação de responsabilidades e reatividade declarativa.
+Quanto ao diretório `frontend/` a escolha - deveras polêmica, com manipulação de votação - foi o Vue (gerenciado com auxilio do Vite), que é um framework progressivo para construção de interfaces web reativas. Sua arquitetura é baseada no padrão MVVM (Model-View-ViewModel), promovendo separação de responsabilidades e reatividade declarativa. Cuidado para não confundir com Model de MVVM com Model de MVC: Model em MVVM (Vue) representa um estado de um componente, enquanto Model em MVC diz respeito à uma tabela do banco de dados.
 
 A View é definida com templates baseados em HTML, que são compilados em funções de renderização. O ViewModel, representado pela instância Vue, atua como intermediário entre a View e o Model, expondo dados reativos e manipulando eventos.
 
-A reatividade é garantida por um sistema de observação eficiente, baseado em proxies (Vue 3) ou Object.defineProperty (Vue 2), que rastreia dependências e propaga mudanças automaticamente para a UI.
+A reatividade é garantida por um sistema de observação eficiente, baseado em proxies ou `Object.defineProperty`, que rastreia dependências e propaga mudanças automaticamente para a UI.
 
 A arquitetura é modular: componentes Vue encapsulam template, lógica e estilo, promovendo reutilização. O Vue Router gerencia navegação entre views, e o Pinia (ou Vuex, em versões anteriores) oferece gerenciamento de estado global previsível.
 
-O build é orientado por ferramentas modernas como Vite ou Webpack, com suporte a TypeScript, SSR (via Nuxt.js), e integração com REST/GraphQL.
+O build é orientado pelo Vite, que possui suporte a TypeScript, SSR (via Nuxt.js), e integração com REST/GraphQL.
 
 ```mermaid
 flowchart LR
@@ -70,7 +71,7 @@ style VUE fill:#111,color:#42b883,stroke:#42b883;
 classDef Arch fill:#35495e,color:#42b883,stroke:#42b883;
 
 style BACKEND fill:#f7f7f7,color:#070,stroke:#070;
-style Backend fill:#6dcc3c,color:#f7f7f7,stroke:#f7f7f7;
+style Backend fill:#080,color:#f7f7f7,stroke:#f7f7f7;
 
 
 linkStyle 0,1,2,3,4 stroke:#42b883,color:#fff
@@ -125,40 +126,106 @@ linkStyle 0,1,2,3,4 stroke:#ff7820,color:#fff
 linkStyle 5,6,7,8,9 stroke:#070,color:#fff
 ```
 
+### Banco de Dados
+
+A persistência dos dados gerenciados e armazenados pela aplicação se dão com um banco de dados relacional: PostgreSQL. Migrações de banco de dados pode ser gerenciadas pelo próprio Spring, mas não é o mais indicado em cenários de produção. As tabelas do banco são definidas no Spring através da anotação `@Entity` nas classes escritas - por motivos de boas práticas - em `entity/`, sub-diretório de `backend/`.
+
+![DB Schema](./imgs/db-schema.svg)
+
 <!--
-## Execução
+// Favor NÃO remover estes comentários
+// Código de geração do SVG acima, gerado em https://dbdiagram.io/d
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
 
-Antes de iniciar com o desenvolvimento e os comandos, é importante definir as variáveis de ambiente no seu ambiente de desenvolvimento. Abaixo a listagem de quais definir:
 
-| Variável  | Tipo     | Necessidade            | Default | Descrição                  |
-| :-------- | :------- | :--------------------- | :------ | :------------------------- |
-| `EXAMPLE` | `string` | [Required \| Optional] | `Foo`   | Lorem ipsum dolor sit amet |
+Project "Finance Control" {
+  database_type: 'PostgreSQL'
+}
+
+
+Table "category_entity" {
+  "id" SERIAL [pk, increment]
+  "name" VARCHAR(255) [not null]
+}
+
+Table "users" {
+  "id" UUID [pk]
+  "name" VARCHAR(50) [not null]
+  "email" VARCHAR(255) [unique, not null]
+  "password" VARCHAR(255) [not null]
+}
+
+Table "transaction_entity" {
+  "id" SERIAL [pk, increment]
+  "category_id" INTEGER [not null]
+  "user_id" UUID [not null]
+  "value" NUMERIC
+  "earned_date" DATE
+  "created_date" TIMESTAMP
+  "updated_date" TIMESTAMP
+}
+
+Ref "fk_transaction_category":"category_entity"."id" < "transaction_entity"."category_id"
+Ref "fk_transaction_user":"users"."id" < "transaction_entity"."user_id"
+ -->
+
+## Requisitos
+
+- Node >= 23.0.0
+- NPM >= 10.0.0
+- Java/JDK >= 17.0.0
+
+Para que tudo funcione perfeitamente, tanto Front quanto Back, assim como a conexão entre eles, é importante definir as variáveis de ambiente no seu ambiente de desenvolvimento. Abaixo a listagem de quais definir, tendo como modelo o arquivo `./frontend/.env-example`:
+
+| Variável                | Tipo     | Necessidade | Default | Descrição                            |
+| :---------------------- | :------- | :---------: | :------ | :----------------------------------- |
+| `VUE_APP_API_BASE_PATH` | `string` |  Required   | -       | Path padrão para URL da API          |
+| `VUE_APP_API_USER_PATH` | `string` |  Required   | -       | Path padrão para endpoint de usuário |
+
+## Comandos
 
 ### Front-End
 
+#### Configurar o Setup
 
-LISTA DE POSSÍVEIS AÇÕES
+```sh
+npm install
+```
 
-Linter
-Checagem de Tipos
-Conversão (e.g. TS -> JS)
-Buscar/iniciar Migrações (Atualizações) de Banco de Dados
-Atualizar Estrutura do Banco de Dados com Novas Migrações
-Iniciar Testes Automatizados
-Popular Banco de Dados para Execução Local
-Iniciar o Servidor
+#### Iniciar Servidor Local
 
+```sh
+npm run dev
+```
 
-#### Ação
+#### Compilar para Produção
 
-`comando`
+```sh
+npm run build
+```
 
 ### Back-End
 
-#### Ação
+#### Configurar o Setup
 
-`comando`
+```sh
+mvn clean install
+```
 
+#### Iniciar Servidor Local
+
+```sh
+mvn spring-boot:run
+```
+
+#### Rodar Testes Automatizados
+
+```sh
+mvn tests
+```
+
+<!--
 ## To-Do List
 
 -   [ ] Lista
