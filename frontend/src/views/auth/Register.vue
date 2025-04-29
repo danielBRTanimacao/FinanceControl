@@ -15,7 +15,7 @@ export default {
             iconUnlock: PasswordIconUnlock,
             showPassword: false,
             newUser: {
-                username: "",
+                name: "",
                 email: "",
                 password: "",
             },
@@ -84,7 +84,7 @@ export default {
                                 <img :src="iconPerson" alt="img-icon-email" />
                             </label>
                             <input
-                                v-model="newUser.username"
+                                v-model="newUser.name"
                                 type="text"
                                 name="name"
                                 id="inputName"
@@ -133,6 +133,7 @@ export default {
                                 class="indent-10 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                                 placeholder="Password"
                                 required
+                                minlength="8"
                                 maxlength="255"
                             />
                         </div>

@@ -1,20 +1,43 @@
 <script>
+import PersonIcon from "../../assets/imgs/icons/icon-person.png";
 import MailIcon from "../../assets/imgs/icons/icon-mail.png";
 import PasswordIcon from "../../assets/imgs/icons/icon-password.png";
 import PasswordIconUnlock from "../../assets/imgs/icons/icon-unlock.png";
 
+import axios from "axios";
+
 export default {
     data() {
         return {
+            iconPerson: PersonIcon,
             icon: MailIcon,
             iconPassword: PasswordIcon,
             iconUnlock: PasswordIconUnlock,
             showPassword: false,
+            newUser: {
+                email: "",
+                password: "",
+            },
+            errorMsg: "",
         };
     },
     methods: {
         togglePassword() {
             this.showPassword = !this.showPassword;
+        },
+        async submitRegisterForm() {
+            try {
+                const response = await axios.post(
+                    "http://127.0.0.1:8080/api/auth/login",
+                    this.newUser
+                );
+                this.errorMsg = `Bem vindo de volta ${this.newUser.username}`;
+                console.log(response);
+                // redirecionar o user
+            } catch (error) {
+                this.errorMsg =
+                    error.response?.data?.message || "Houve um equivoco";
+            }
         },
     },
 };
@@ -24,6 +47,7 @@ export default {
     <main class="w-full h-[100dvh] bg-black mainForm lg:flex">
         <article class="hidden w-300 lg:block"></article>
         <form
+            @submit.prevent="submitRegisterForm"
             class="glassmorphism w-full h-[100dvh] flex justify-center items-center text-white"
             method="post"
         >
@@ -59,6 +83,7 @@ export default {
                                 <img :src="icon" alt="img-icon-email" />
                             </label>
                             <input
+                                v-model="newUser.email"
                                 type="email"
                                 name="email"
                                 id="inputEmail"
@@ -83,6 +108,7 @@ export default {
                             </label>
                             <input
                                 :type="showPassword ? 'text' : 'password'"
+                                v-model="newUser.password"
                                 name="password"
                                 id="inputPassword"
                                 class="indent-10 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
@@ -95,14 +121,14 @@ export default {
 
                     <div class="pt-5">
                         <button
-                            class="w-full py-3 bg-white rounded-full text-gray-500"
+                            class="w-full py-3 bg-white rounded-full text-gray-500 cursor-pointer"
                             type="submit"
                         >
-                            Entrar
+                            Criar
                         </button>
                     </div>
                 </article>
-                <p class="errorsForm"></p>
+                <p class="errorsForm">{{ errorMsg }}</p>
             </div>
         </form>
     </main>
