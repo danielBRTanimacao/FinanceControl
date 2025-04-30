@@ -4,6 +4,11 @@
     --bg-transparent: #070f2f6f;
 }
 
+body {
+    background-color: #070f2f;
+    color: white;
+}
+
 .mainForm {
     background-color: #070f2f;
     background-image: url("../imgs/svgs/cedulas-bg.svg");

@@ -31,7 +31,9 @@ export default {
                     "http://127.0.0.1:8080/api/auth/login",
                     this.newUser
                 );
-                this.errorMsg = `Bem vindo de volta ${this.newUser.username}`;
+                // Salvar token de user no cache
+
+                this.errorMsg = `Bem vindo!`;
                 console.log(response);
                 // redirecionar o user
             } catch (error) {
