@@ -35,7 +35,7 @@ export default {
 
                 this.errorMsg = `Bem vindo!`;
                 console.log(response);
-                // redirecionar o user
+                // E redirecionar o user
             } catch (error) {
                 this.errorMsg =
                     error.response?.data?.message || "Houve um equivoco";

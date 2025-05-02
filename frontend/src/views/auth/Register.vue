@@ -34,7 +34,7 @@ export default {
                 );
                 this.errorMsg = `Seja bem vindo ${this.newUser.username}`;
                 console.log(response);
-                // redirecionar o user
+                // redirecionar o user para login
             } catch (error) {
                 this.errorMsg =
                     error.response?.data?.message || "Houve um equivoco";
