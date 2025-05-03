@@ -5,6 +5,7 @@ import PasswordIcon from "../../assets/imgs/icons/icon-password.png";
 import PasswordIconUnlock from "../../assets/imgs/icons/icon-unlock.png";
 
 import axios from "axios";
+import router from "@/router/router";
 
 export default {
     data() {
@@ -31,11 +32,11 @@ export default {
                     "http://127.0.0.1:8080/api/auth/login",
                     this.newUser
                 );
-                // Salvar token de user no cache
 
+                // Salvar token de user no cache
+                localStorage.setItem("token", response["data"]["token"]);
                 this.errorMsg = `Bem vindo!`;
-                console.log(response);
-                // E redirecionar o user
+                router.push("/");
             } catch (error) {
                 this.errorMsg =
                     error.response?.data?.message || "Houve um equivoco";

@@ -5,6 +5,7 @@ import PasswordIcon from "../../assets/imgs/icons/icon-password.png";
 import PasswordIconUnlock from "../../assets/imgs/icons/icon-unlock.png";
 
 import axios from "axios";
+import router from "@/router/router";
 
 export default {
     data() {
@@ -32,9 +33,8 @@ export default {
                     "http://127.0.0.1:8080/api/auth/register",
                     this.newUser
                 );
-                this.errorMsg = `Seja bem vindo ${this.newUser.username}`;
-                console.log(response);
-                // redirecionar o user para login
+                this.errorMsg = `Seja bem vindo!`;
+                router.push("/login");
             } catch (error) {
                 this.errorMsg =
                     error.response?.data?.message || "Houve um equivoco";

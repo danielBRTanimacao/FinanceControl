@@ -3,34 +3,47 @@ import TransactionView from "@/components/dashboard/TransactionView.vue";
 import emptImage from "../../assets/imgs/svgs/empty.svg";
 import axios from "axios";
 
-async function fetchTransactions() {
-    try {
-        const response = await axios.get(
-            "http://127.0.0.1:8080/api/transactions"
-        );
-        console.log(response);
-    } catch (e) {
-        console.log("Erro " + e);
-    }
-}
-
-fetchTransactions();
-
 export default {
     data() {
         return {
             emptyImg: emptImage,
-            testIsNull: false,
+            haveTransaction: false,
+            dataTransactions: [],
         };
     },
     components: {
         TransactionView,
     },
+    async created() {
+        await this.fetchTransactions();
+    },
+    methods: {
+        async fetchTransactions() {
+            try {
+                console.log(localStorage.getItem("token"));
+                const response = await axios.get(
+                    "http://127.0.0.1:8080/api/transactions",
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "token"
+                            )}`,
+                        },
+                    }
+                );
+                this.dataTransactions = response.data;
+                this.haveTransaction = true;
+            } catch (e) {
+                console.log("Erro " + e);
+                this.haveTransaction = false;
+            }
+        },
+    },
 };
 </script>
 
 <template>
-    <main class="m-7 border border-2 border-gray-700 rounded-xl h-fit">
+    <main class="m-7 border border-2 border-gray-700 rounded-xl h-[100dvh]">
         <header class="mx-3 py-5 flex justify-between items-center">
             <a href="/" class="uppercase font-bold text-2xl">Dashboard</a>
             <a href="#">
@@ -41,41 +54,53 @@ export default {
                 />
             </a>
         </header>
-        <section class="mx-3 py-7">
-            <article class="pb-7">
-                <select class="text-gray-600" name="typeEarns" id="userEarns">
-                    <option value="earns">Dados ganhos</option>
-                    <option value="spend">Dados gastos</option>
-                </select>
-                <p class="text-3xl">$<span class="typeValue">1,294.50</span></p>
-            </article>
-            <aside>
-                <div class="flex justify-between text-gray-600 pb-3">
-                    <p>Transações</p>
-                    <a href="#all">Ver todas</a>
-                </div>
-                <div
-                    v-if="testIsNull"
-                    class="flex flex-col justify-center items-center"
-                    id="emptyAlert"
-                >
-                    <img
-                        :src="emptyImg"
-                        class="w-[60%]"
-                        alt="empty-transactions-image"
-                    />
-                    <h3 class="text-gray-500">
-                        Você não possui nenhuma transação
-                    </h3>
-                    <h2 class="text-xl text-gray-400 uppercase">
-                        ADICIONE UMA!
-                    </h2>
-                </div>
-                <div v-else class="allTransactions">
-                    <TransactionView />
-                </div>
-            </aside>
-            <div class="flex justify-evenly pt-5">
+        <section class="mx-3 py-7 h-[90dvh] flex flex-col justify-between">
+            <div>
+                <article>
+                    <select
+                        class="text-gray-600"
+                        name="typeEarns"
+                        id="userEarns"
+                    >
+                        <option value="earns">Dados ganhos</option>
+                        <option value="spend">Dados gastos</option>
+                    </select>
+                    <p class="text-3xl">
+                        $<span class="typeValue">1,294.50</span>
+                    </p>
+                    <div class="flex justify-between text-gray-600 py-3">
+                        <p>Transações</p>
+                        <a href="#all">Ver todas</a>
+                    </div>
+                </article>
+                <aside>
+                    <div
+                        v-if="!haveTransaction"
+                        class="flex flex-col justify-center items-center"
+                        id="emptyAlert"
+                    >
+                        <img
+                            :src="emptyImg"
+                            class="w-[60%]"
+                            alt="empty-transactions-image"
+                        />
+                        <h3 class="text-gray-500">
+                            Você não possui nenhuma transação
+                        </h3>
+                        <h2 class="text-xl text-gray-400 uppercase">
+                            ADICIONE UMA!
+                        </h2>
+                    </div>
+                    <div v-else id="showTransactions">
+                        <TransactionView
+                            v-for="(transaction, index) in dataTransactions"
+                            :key="index"
+                            :data="transaction"
+                        />
+                    </div>
+                </aside>
+            </div>
+            <div class="flex justify-evenly">
                 <a
                     href="#addTransaction"
                     class="flex flex-col items-center justify-center gap-2"
