@@ -29,7 +29,7 @@ public class TransactionsController {
     }
 
     @GetMapping("/transactions")
-    public List<TransactionEntity> transaction() {
+    public ResponseEntity<List<TransactionEntity>> transaction() {
         return transactionServ.listTransactions();
     }
 

@@ -36,7 +36,7 @@ export default {
                 // Salvar token de user no cache
                 localStorage.setItem("token", response["data"]["token"]);
                 this.errorMsg = `Bem vindo!`;
-                router.push("/");
+                router.push("/painel");
             } catch (error) {
                 this.errorMsg =
                     error.response?.data?.message || "Houve um equivoco";

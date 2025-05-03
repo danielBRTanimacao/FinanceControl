@@ -30,8 +30,9 @@ public class Transactionservice {
         .collect(Collectors.toList());
     }
 
-    public List<TransactionEntity> listTransactions() {
-        return transactionRepo.findAll();
+    public ResponseEntity<List<TransactionEntity>> listTransactions() {
+        List<TransactionEntity> transactions = transactionRepo.findAll();
+        return ResponseEntity.ok(transactions);
     }
     
     public ResponseEntity<TransactionEntity> getTransaction(Long id) {
