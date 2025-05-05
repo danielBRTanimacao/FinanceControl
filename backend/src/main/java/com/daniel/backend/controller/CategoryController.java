@@ -12,7 +12,7 @@ import jakarta.validation.Valid;
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/categories")
 public class CategoryController {
     
     private final CategoryService categoryServ;
@@ -21,24 +21,25 @@ public class CategoryController {
         this.categoryServ = categoryService;
     }
 
-    @GetMapping("/categories")
+    @GetMapping
     public List<CategoryEntity> getAllCategories() {
         return categoryServ.listCategories();
     }
 
-    @PostMapping("/category")
-    public ResponseEntity<CategoryEntity> createCategories(@Valid @RequestBody CategoryEntity category) {
+    @PostMapping
+    public ResponseEntity<CategoryEntity> createCategory(@Valid @RequestBody CategoryEntity category) {
         CategoryEntity saved = categoryServ.createCategory(category);
         return ResponseEntity.ok(saved);
     }
 
-    @PutMapping("/category/{id}")
-    public ResponseEntity<CategoryEntity> updateSpecificCategory(@PathVariable Long id, @RequestBody CategoryEntity entity) {
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoryEntity> updateCategory(@PathVariable Long id, @Valid @RequestBody CategoryEntity entity) {
         return categoryServ.updateCategory(id, entity);
     }
 
-    @DeleteMapping("/category/{id}")
-    public ResponseEntity<CategoryEntity> delSpecificCategory(@PathVariable Long id ) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<CategoryEntity> deleteCategory(@PathVariable Long id) {
         return categoryServ.deleteCategory(id);
     }
 }
+

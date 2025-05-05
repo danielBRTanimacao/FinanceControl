@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.daniel.backend.entity.TransactionEntity;
 import com.daniel.backend.service.Transactionservice;
 
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
@@ -49,8 +50,7 @@ public class TransactionsController {
     }
 
     @PostMapping("/transaction")
-    public TransactionEntity addTransaction(@RequestBody TransactionEntity transaction) {
+    public TransactionEntity addTransaction(@Valid @RequestBody TransactionEntity transaction) {
         return transactionServ.createTransaction(transaction);
     }
-    
 }
