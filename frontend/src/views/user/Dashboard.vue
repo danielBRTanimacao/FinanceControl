@@ -1,5 +1,6 @@
 <script>
 import TransactionView from "@/components/dashboard/TransactionView.vue";
+import CreateTransaction from "@/components/modal/CreateTransaction.vue";
 import emptImage from "../../assets/imgs/svgs/empty.svg";
 import axios from "axios";
 
@@ -7,12 +8,14 @@ export default {
     data() {
         return {
             emptyImg: emptImage,
-            haveTransaction: false,
             dataTransactions: [],
+            haveTransaction: false,
+            showModal: false,
         };
     },
     components: {
         TransactionView,
+        CreateTransaction,
     },
     async created() {
         await this.fetchTransactions();
@@ -103,6 +106,7 @@ export default {
             </div>
             <div class="flex justify-evenly">
                 <a
+                    @click.prevent="showModal = true"
                     href="#addTransaction"
                     class="flex flex-col items-center justify-center gap-2"
                 >
@@ -138,4 +142,5 @@ export default {
             </div>
         </section>
     </main>
+    <CreateTransaction :show="showModal" @close="showModal = false" />
 </template>
