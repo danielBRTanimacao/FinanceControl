@@ -4,9 +4,6 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import com.daniel.backend.entity.CategoryEntity;
 import com.daniel.backend.repository.CategoryRepository;
 
@@ -26,15 +23,15 @@ public class CategoryService {
         return categoryRepo.save(category);
     }
 
-    public ResponseEntity<CategoryEntity> updateCategory(@PathVariable Long id, @RequestBody CategoryEntity entity) {
+    public ResponseEntity<CategoryEntity> updateCategory(Long id, CategoryEntity entity) {
         return categoryRepo.findById(id).map(exists -> {
-            exists.setName(exists.getName());
+            exists.setName(entity.getName());
             CategoryEntity updated = categoryRepo.save(exists);
             return ResponseEntity.ok(updated);
         }).orElse(ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<CategoryEntity> deleteCategory(@PathVariable Long id) {
+    public ResponseEntity<CategoryEntity> deleteCategory(Long id) {
         if (categoryRepo.existsById(id)) {
             categoryRepo.deleteById(id);
             return ResponseEntity.noContent().build();

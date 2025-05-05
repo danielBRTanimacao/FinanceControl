@@ -16,21 +16,18 @@ public class UserController {
         this.userService = userService;
     }
     
-    @SuppressWarnings("rawtypes")
     @PostMapping("/me")
-    public ResponseEntity infosUser() {
+    public ResponseEntity<?> getUserInfo() {
         return userService.getUserInfos();
     }
 
-    @SuppressWarnings("rawtypes")
     @PostMapping("/register")
-    public ResponseEntity createUserEntity(@RequestBody RegisterRequestDTO entity) {
+    public ResponseEntity<?> createUser(@RequestBody RegisterRequestDTO entity) {
         return userService.createUser(entity);
     }
 
-    @SuppressWarnings("rawtypes")
     @PostMapping("/login")
-    public ResponseEntity loginUserEntity(@RequestBody LoginRequestDTO entity) {
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequestDTO entity) {
         return userService.loginUser(entity);
     }
 }

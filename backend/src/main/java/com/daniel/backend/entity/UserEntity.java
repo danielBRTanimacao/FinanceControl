@@ -6,10 +6,11 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import lombok.Data;
+import lombok.*;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "users")
 public class UserEntity {
     @Id
@@ -21,15 +22,18 @@ public class UserEntity {
     private List<TransactionEntity> transactions;
 
     @NotBlank(message = "name não pode estar vazio!")
-    @Size(min = 2, max = 50, message = "Name tem que ter no minimo 2 caracteres maximo de 50")
+    @Size(min = 2, max = 50, message = "Name tem que ter no mínimo 2 caracteres e no máximo 50")
+    @Column(nullable = false)
     private String name;
 
-    @Email(message = "Email invalido!")
+    @Email(message = "Email inválido!")
     @NotBlank(message = "email não pode estar vazio!")
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
 
     @NotBlank(message = "password não pode estar vazio!")
-    @Size(min = 6, message = "password deve ser maior de 6 caracteres")
+    @Size(min = 6, message = "password deve ter no mínimo 6 caracteres")
+    @Column(nullable = false)
     private String password;
 }
+

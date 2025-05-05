@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -22,8 +21,7 @@ public class TransactionEntity {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    @NotNull(message = "Categoria é obrigatoria")
-    @Valid
+    @NotNull(message = "Categoria é obrigatória")
     private CategoryEntity category;
 
     @ManyToOne
@@ -31,9 +29,7 @@ public class TransactionEntity {
     @JsonBackReference
     private UserEntity user;
 
-    @NotNull(message = "Title é obrigatoria")
     @NotBlank(message = "Title não pode estar vazio")
-    @Valid
     private String title;
 
     @Column(name = "\"value\"")
@@ -41,13 +37,22 @@ public class TransactionEntity {
 
     private LocalDate earnedDate;
 
-    private final LocalDateTime createdDate = LocalDateTime.now();
-    private LocalDateTime updated_Date = LocalDateTime.now();
+    private LocalDateTime createdDate;
+    private LocalDateTime updatedDate;
 
     @PrePersist
     public void prePersist() {
         if (earnedDate == null) {
             earnedDate = LocalDate.now();
         }
+        if (createdDate == null) {
+            createdDate = LocalDateTime.now();
+        }
+        updatedDate = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        updatedDate = LocalDateTime.now();
     }
 }

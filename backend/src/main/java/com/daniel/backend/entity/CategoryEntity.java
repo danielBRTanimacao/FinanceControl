@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Entity
+@Table(name = "categories")
 @Getter
 @Setter
 public class CategoryEntity {
@@ -14,6 +15,7 @@ public class CategoryEntity {
     private Long id;
 
     @NotBlank(message = "name não pode estar vazio")
+    @Column(nullable = false)
     private String name;
 
     public void setName(String name) {
