@@ -8,7 +8,19 @@ const emit = defineEmits(["close"]);
 <script>
 export default {
     data() {
-        return { dataCategories: [] };
+        return {
+            dataCategories: [],
+            dataTransaction: {
+                title: "",
+                value: "",
+                category: {
+                    id: "",
+                },
+                user: {
+                    id: 1, // colocar um cache do id do user
+                },
+            },
+        };
     },
     async created() {
         await this.fetchCategories();
@@ -32,7 +44,25 @@ export default {
                 console.log(error);
             }
         },
-        submitTransactionForm() {},
+        async submitTransactionForm() {
+            try {
+                const response = await axios.post(
+                    "http://127.0.0.1:8080/api/transaction",
+                    this.dataTransaction,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "token"
+                            )}`,
+                        },
+                    }
+                );
+
+                router.push("/");
+            } catch (error) {
+                console.log("Deu bo", error);
+            }
+        },
     },
 };
 </script>
@@ -60,6 +90,7 @@ export default {
                 >
                     <label for="titleTransaction">Nome da transação:</label>
                     <input
+                        v-model="dataTransaction.title"
                         class="rounded border border-gray-300 text-gray-900 text-sm block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                         type="text"
                         name="title"
@@ -70,6 +101,7 @@ export default {
                     />
                     <label for="valueTransaction">Valor:</label>
                     <input
+                        v-model="dataTransaction.value"
                         class="rounded border border-gray-300 text-gray-900 text-sm block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                         type="number"
                         name="value"
@@ -78,10 +110,13 @@ export default {
                         step="0.01"
                     />
                     <label for="categoryOption">Categoria:</label>
-                    <select name="categoryOption">
+                    <select
+                        v-model="dataTransaction.category.id"
+                        name="categoryOption"
+                    >
                         <option
                             v-for="categorie in dataCategories"
-                            :value="categorie"
+                            :value="categorie.id"
                         >
                             {{ categorie.name }}
                         </option>
