@@ -7,8 +7,6 @@ import java.time.LocalDateTime;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
@@ -21,7 +19,6 @@ public class TransactionEntity {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
-    @NotNull(message = "Categoria é obrigatória")
     private CategoryEntity category;
 
     @ManyToOne
@@ -29,7 +26,6 @@ public class TransactionEntity {
     @JsonBackReference
     private UserEntity user;
 
-    @NotBlank(message = "Title não pode estar vazio")
     private String title;
 
     @Column(name = "\"value\"")

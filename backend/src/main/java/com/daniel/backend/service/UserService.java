@@ -44,6 +44,7 @@ public class UserService {
         }
 
         UserEntity newUser = new UserEntity();
+
         newUser.setPassword(passwordEncoder.encode(entity.password()));
         newUser.setEmail(entity.email());
         newUser.setName(entity.name());

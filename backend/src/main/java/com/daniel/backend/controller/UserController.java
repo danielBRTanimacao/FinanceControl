@@ -4,9 +4,13 @@ import com.daniel.backend.DTO.LoginRequestDTO;
 import com.daniel.backend.DTO.RegisterRequestDTO;
 import com.daniel.backend.service.UserService;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+@Validated
 @RestController
 @RequestMapping("/api/auth")
 public class UserController {
@@ -22,7 +26,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> createUser(@RequestBody RegisterRequestDTO entity) {
+    public ResponseEntity<?> createUser(@Valid @RequestBody RegisterRequestDTO entity) {
         return userService.createUser(entity);
     }
 
