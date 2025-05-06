@@ -14,9 +14,13 @@ export default {
         <p class="text-gray-500 font-bold">{{ data.title }}</p>
         <small class="uppercase">{{ data.category.name }}</small>
         <p>
-            <span class="valueCondition">-</span>
+            <span class="valueCondition">{{ data.value > 0 ? "+" : "-" }}</span>
             $
-            <span class="valueTransaction">{{ data.value.toFixed(2) }}</span>
+            <span class="valueTransaction">{{
+                data.value > 0
+                    ? data.value.toFixed(2)
+                    : (data.value * -1).toFixed(2)
+            }}</span>
         </p>
     </div>
 </template>
