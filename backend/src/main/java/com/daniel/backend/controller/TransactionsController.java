@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.daniel.backend.entity.TransactionEntity;
@@ -11,6 +12,7 @@ import com.daniel.backend.service.Transactionservice;
 
 import jakarta.validation.Valid;
 
+@Validated
 @RestController
 @RequestMapping("/api")
 public class TransactionsController {
@@ -40,12 +42,12 @@ public class TransactionsController {
     }
 
     @PutMapping("/transaction/{id}")
-    public ResponseEntity<TransactionEntity> updateTransaction(@PathVariable Long id, @RequestBody TransactionEntity transaction) {
+    public ResponseEntity<TransactionEntity> updateTransaction(@Valid @PathVariable Long id, @RequestBody TransactionEntity transaction) {
         return transactionServ.upTransaction(id, transaction);
     }
 
     @DeleteMapping("/transaction/{id}")
-    public ResponseEntity<Void> deleteTransaction(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTransaction(@Valid @PathVariable Long id) {
         return transactionServ.delTransaction(id);
     }
 

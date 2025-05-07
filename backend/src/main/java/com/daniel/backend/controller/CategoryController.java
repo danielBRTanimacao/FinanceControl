@@ -3,6 +3,7 @@ package com.daniel.backend.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import com.daniel.backend.entity.CategoryEntity;
@@ -10,7 +11,7 @@ import com.daniel.backend.service.CategoryService;
 
 import jakarta.validation.Valid;
 
-
+@Validated
 @RestController
 @RequestMapping("/api/categories")
 public class CategoryController {
@@ -38,7 +39,7 @@ public class CategoryController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CategoryEntity> deleteCategory(@PathVariable Long id) {
+    public ResponseEntity<CategoryEntity> deleteCategory(@Valid @PathVariable Long id) {
         return categoryServ.deleteCategory(id);
     }
 }
