@@ -2,6 +2,7 @@ package com.daniel.backend.service;
 
 import java.util.Optional;
 
+import com.daniel.backend.exceptions.InvalidCredencialsException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,7 +41,7 @@ public class UserService {
         Optional<UserEntity> user = userRepo.findByEmail(entity.email());
 
         if (user.isPresent()) {
-            return ResponseEntity.badRequest().body("Usuário já existe com este email");
+            throw new InvalidCredencialsException("Usuário já existe com este email");
         }
 
         UserEntity newUser = new UserEntity();
@@ -55,14 +56,18 @@ public class UserService {
     }
 
     public ResponseEntity<?> loginUser(LoginRequestDTO entity) {
-        UserEntity user = userRepo.findByEmail(entity.email())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        UserEntity user = userRepo
+                .findByEmail(entity.email())
+                .orElseThrow(
+                        () -> new InvalidCredencialsException("Credenciais inválidas")
+                );
 
         if (passwordEncoder.matches(entity.password(), user.getPassword())) {
             String token = tokenService.generateToken(user);
             return ResponseEntity.ok(new ResponseDTO(user.getName(), token));
         }
 
-        return ResponseEntity.badRequest().body("Credenciais inválidas");
+        throw new InvalidCredencialsException("Credenciais inválidas");
+
     }
 }

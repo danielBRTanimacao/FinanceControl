@@ -8,8 +8,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Table(name = "users")
 public class UserEntity {
     @Id
