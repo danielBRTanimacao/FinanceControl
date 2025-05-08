@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.daniel.backend.exceptions.InvalidCredencialsException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -65,13 +66,13 @@ public class Transactionservice {
         if (user != null) {
             transaction.setUser(user);
         }
-        
+
         if (transaction.getEarnedDate() == null) {
             transaction.setEarnedDate(LocalDateTime.now().toLocalDate());
         }
         
         transaction.setUpdatedDate(LocalDateTime.now());
-        
+
         return transactionRepository.save(transaction);
     }
 }
