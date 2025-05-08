@@ -27,5 +27,12 @@ public class UserEntity {
 
     @Column(nullable = false)
     private String password;
+
+    @Override
+    public String toString() {
+        return "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'';
+    }
 }
 

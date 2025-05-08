@@ -4,6 +4,7 @@ import com.daniel.backend.DTO.LoginRequestDTO;
 import com.daniel.backend.DTO.RegisterRequestDTO;
 import com.daniel.backend.service.UserService;
 
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,8 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
-    
+
+    @Transactional
     @GetMapping("/me")
     public ResponseEntity<?> getUserInfo() {
         return userService.getUserInfos();

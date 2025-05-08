@@ -5,6 +5,7 @@ import java.util.Optional;
 import com.daniel.backend.exceptions.InvalidCredencialsException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,9 +33,12 @@ public class UserService {
         }
 
         var principal = authentication.getPrincipal();
-        String username = principal instanceof UserDetails userDetails ? userDetails.getUsername() : principal.toString();
+        if (principal instanceof UserEntity user) {
+            var dto = new ResponseInfosUserDTO(user.getId(), user.getName(), user.getEmail());
+            return  ResponseEntity.ok(dto);
+        }
 
-        return ResponseEntity.ok(new ResponseDTO(username, username));
+        return ResponseEntity.status(500).body("Erro ao buscar dados!");
     }
 
     public ResponseEntity<?> createUser(RegisterRequestDTO entity) {
