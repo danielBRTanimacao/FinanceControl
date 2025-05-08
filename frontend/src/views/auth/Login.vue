@@ -33,7 +33,6 @@ export default {
                     this.newUser
                 );
 
-                // Salvar token de user no cache
                 localStorage.setItem("token", response["data"]["token"]);
                 this.errorMsg = `Bem vindo!`;
                 router.push("/painel");
