@@ -25,10 +25,11 @@ public class TransactionsController {
 
     @GetMapping("/dashboard")
     public List<TransactionEntity> dashboard(
+        @RequestParam(required = false) Integer max,
         @RequestParam(required = false) String category,
         @RequestParam(required = false) BigDecimal value
     ) {
-        return transactionServ.filtersTransactions(category, value);
+        return transactionServ.filtersTransactions(max, category, value);
     }
 
     @GetMapping("/transactions")

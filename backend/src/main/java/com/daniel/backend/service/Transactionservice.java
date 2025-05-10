@@ -23,13 +23,14 @@ public class Transactionservice {
         this.transactionRepository = transactionRepo;
     }
 
-    public List<TransactionEntity> filtersTransactions(String category, BigDecimal value) {
+    public List<TransactionEntity> filtersTransactions(Integer max, String category, BigDecimal value) {
         return transactionRepository.findAll().stream()
-        .filter(t -> category == null || 
-                     (t.getCategory() != null && 
-                      t.getCategory().getName().equalsIgnoreCase(category)))
-        .filter(t -> value == null || value.compareTo(t.getValue()) == 0)
-        .collect(Collectors.toList());
+                .filter(t -> category == null ||
+                             (t.getCategory() != null &&
+                              t.getCategory().getName().equalsIgnoreCase(category)))
+                .filter(t -> value == null || value.compareTo(t.getValue()) == 0)
+                .limit(max != null ? max : Long.MAX_VALUE)
+                .collect(Collectors.toList());
     }
 
     public ResponseEntity<List<TransactionEntity>> listTransactions() {

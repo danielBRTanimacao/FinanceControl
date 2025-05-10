@@ -1,6 +1,7 @@
 <script>
 import TransactionView from "@/components/dashboard/TransactionView.vue";
 import CreateTransaction from "@/components/modal/CreateTransaction.vue";
+import ChartTransactions from "@/components/modal/ChartTransactions.vue";
 import emptImage from "../../assets/imgs/svgs/empty.svg";
 import axios from "axios";
 
@@ -11,11 +12,14 @@ export default {
             dataTransactions: [],
             haveTransaction: false,
             showModal: false,
+            showChartModal: false,
+            filterType: "earns",
         };
     },
     components: {
         TransactionView,
         CreateTransaction,
+        ChartTransactions,
     },
     async created() {
         await this.fetchTransactions();
@@ -25,7 +29,7 @@ export default {
             try {
                 console.log(localStorage.getItem("token"));
                 const response = await axios.get(
-                    "http://localhost:8080/api/transactions",
+                    "http://127.0.0.1:8080/api/dashboard?max=5",
                     {
                         headers: {
                             Authorization: `Bearer ${localStorage.getItem(
@@ -43,6 +47,25 @@ export default {
             }
         },
     },
+    computed: {
+        totalFilteredValue() {
+            if (!this.dataTransactions.length) return 0;
+
+            return this.dataTransactions
+                .filter((t) => {
+                    if (this.filterType === "earns")
+                        return t.category?.name === "GANHEI";
+                    else return t.category?.name !== "GANHEI";
+                })
+                .reduce((sum, t) => {
+                    const value = parseFloat(t.value);
+                    return this.filterType === "earns"
+                        ? sum + value
+                        : sum - value;
+                }, 0)
+                .toFixed(2);
+        },
+    },
 };
 </script>
 
@@ -52,8 +75,9 @@ export default {
             <a href="/" class="uppercase font-bold text-2xl">Dashboard</a>
             <a href="#">
                 <img
-                    class="rounded-full"
-                    src="https://fakeimg.pl/35/"
+                    class="rounded-full border border-2"
+                    src="https://randomuser.me/api/portraits/men/3.jpg"
+                    width="40"
                     alt="icon-user"
                 />
             </a>
@@ -62,6 +86,7 @@ export default {
             <div>
                 <article>
                     <select
+                        v-model="filterType"
                         class="text-gray-600"
                         name="typeEarns"
                         id="userEarns"
@@ -70,7 +95,7 @@ export default {
                         <option value="spend">Dados gastos</option>
                     </select>
                     <p class="text-3xl">
-                        $<span class="typeValue">1,294.50</span>
+                        $<span class="typeValue">{{ totalFilteredValue }}</span>
                     </p>
                     <div class="flex justify-between text-gray-600 py-3">
                         <p>Transações</p>
@@ -95,7 +120,11 @@ export default {
                             ADICIONE UMA!
                         </h2>
                     </div>
-                    <div v-else id="showTransactions">
+                    <div
+                        v-else
+                        id="showTransactions"
+                        class="h-[50dvh] overflow-auto"
+                    >
                         <TransactionView
                             v-for="(transaction, index) in dataTransactions"
                             :key="index"
@@ -118,6 +147,7 @@ export default {
                     <small>Adicionar transação</small>
                 </a>
                 <a
+                    @click.prevent="showChartModal = true"
                     href="#addTransaction"
                     class="flex flex-col items-center justify-center gap-2"
                 >
@@ -143,4 +173,5 @@ export default {
         </section>
     </main>
     <CreateTransaction :show="showModal" @close="showModal = false" />
+    <ChartTransactions :show="showChartModal" @close="showChartModal = false" />
 </template>
