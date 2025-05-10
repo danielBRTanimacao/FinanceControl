@@ -1,3 +1,6 @@
+<script setup>
+import { isLoggedIn } from "@/utils/authUtils";
+</script>
 <template>
     <div
         class="min-h-screen bg-gradient-to-br from-gray-50 to-white flex flex-col"
@@ -9,7 +12,7 @@
                 <h1 class="text-3xl font-bold text-blue-700">
                     Finance Control
                 </h1>
-                <div class="flex gap-3">
+                <div v-if="!isLoggedIn" class="flex gap-3">
                     <a
                         href="/login"
                         class="text-white bg-blue-600 hover:bg-blue-700 px-5 py-2 rounded-full transition"
@@ -19,6 +22,13 @@
                         href="/registro"
                         class="text-blue-600 border border-blue-600 hover:bg-blue-50 px-5 py-2 rounded-full transition"
                         >Registrar</a
+                    >
+                </div>
+                <div v-else class="flex gap-3">
+                    <a
+                        href="/painel"
+                        class="text-white bg-blue-600 hover:bg-blue-700 px-5 py-2 rounded-full transition"
+                        >Painel</a
                     >
                 </div>
             </div>
@@ -41,9 +51,16 @@
                         financeiro com facilidade.
                     </p>
                     <a
+                        v-if="!isLoggedIn"
                         href="/registro"
                         class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-full text-lg transition block w-fit"
                         >Criar conta gratuita</a
+                    >
+                    <a
+                        v-else
+                        href="/painel"
+                        class="w-full md:w-50 text-center bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-full text-lg transition block w-fit"
+                        >Meu painel</a
                     >
                 </div>
                 <div>

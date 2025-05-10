@@ -4,6 +4,8 @@ import Login from "@/views/auth/Login.vue";
 import Register from "@/views/auth/Register.vue";
 import IndexPage from "@/views/user/IndexPage.vue";
 
+import { isLoggedIn } from "@/utils/authUtils";
+
 const routes = [
     {
         path: "/",
@@ -30,12 +32,6 @@ const router = createRouter({
     history: createWebHistory(),
     routes,
 });
-
-function isLoggedIn() {
-    const token = localStorage.getItem("token");
-    if (!token) return false;
-    return true;
-}
 
 router.beforeEach((to, from, next) => {
     const loggedIn = isLoggedIn();
