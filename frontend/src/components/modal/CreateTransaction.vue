@@ -1,5 +1,7 @@
 <script setup>
 import axios from "axios";
+import CreateCategory from "./CreateCategory.vue";
+import { getCookie } from "@/utils/authUtils";
 
 const props = defineProps({ show: Boolean });
 const emit = defineEmits(["close"]);
@@ -20,6 +22,7 @@ export default {
                     id: 1, // colocar um cache do id do user
                 },
             },
+            showModal: false,
         };
     },
     async created() {
@@ -32,9 +35,7 @@ export default {
                     "http://127.0.0.1:8080/api/categories",
                     {
                         headers: {
-                            Authorization: `Bearer ${localStorage.getItem(
-                                "token"
-                            )}`,
+                            Authorization: `Bearer ${getCookie("token")}`,
                         },
                     }
                 );
@@ -51,9 +52,7 @@ export default {
                     this.dataTransaction,
                     {
                         headers: {
-                            Authorization: `Bearer ${localStorage.getItem(
-                                "token"
-                            )}`,
+                            Authorization: `Bearer ${getCookie("token")}`,
                         },
                     }
                 );
@@ -109,7 +108,17 @@ export default {
                         required
                         step="0.01"
                     />
-                    <label for="categoryOption">Categoria:</label>
+                    <label for="categoryOption"
+                        >Categoria:
+                        <small
+                            ><a
+                                href="#createCategory"
+                                @click.prevent="showModal = true"
+                                class="text-blue-500"
+                                >criar categoria...</a
+                            ></small
+                        ></label
+                    >
                     <select
                         v-model="dataTransaction.category.id"
                         name="categoryOption"
@@ -131,4 +140,5 @@ export default {
             </div>
         </div>
     </section>
+    <CreateCategory :show="showModal" @close="showModal = false" />
 </template>

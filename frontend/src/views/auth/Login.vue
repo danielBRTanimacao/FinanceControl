@@ -33,7 +33,7 @@ export default {
                     this.newUser
                 );
 
-                document.cookie = `token=${response["data"]["token"]}; max-age=86400`;
+                document.cookie = `token=${response["data"]["token"]}; max-age=3600`;
                 this.errorMsg = `Bem vindo!`;
                 router.push("/painel");
             } catch (error) {

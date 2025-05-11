@@ -4,10 +4,7 @@ import CreateTransaction from "@/components/modal/CreateTransaction.vue";
 import ChartTransactions from "@/components/modal/ChartTransactions.vue";
 import emptImage from "../../assets/imgs/svgs/empty.svg";
 import axios from "axios";
-import Chart from "chart.js/auto";
 import { getCookie } from "@/utils/authUtils";
-
-let chartInstance = null;
 
 export default {
     data() {
@@ -16,14 +13,13 @@ export default {
             dataTransactions: [],
             haveTransaction: false,
             showModal: false,
-            showChartModal: false,
+            showFilters: false,
             filterType: "earns",
         };
     },
     components: {
         TransactionView,
         CreateTransaction,
-        ChartTransactions,
     },
     mounted() {
         this.fetchTransactions();
@@ -41,57 +37,10 @@ export default {
                 );
                 this.dataTransactions = response.data;
                 this.haveTransaction = this.dataTransactions.length > 0;
-                if (this.haveTransaction) {
-                    this.renderChart();
-                }
             } catch (e) {
                 console.log("Erro " + e);
                 this.haveTransaction = false;
             }
-        },
-
-        renderChart() {
-            if (chartInstance) {
-                chartInstance.destroy();
-            }
-
-            const ctx = this.$refs.chartRef;
-            if (!ctx) return;
-
-            // Agrupar por data e somar os valores
-            const grouped = {};
-            this.dataTransactions.forEach((t) => {
-                const date = t.earnedDate;
-                if (!grouped[date]) grouped[date] = 0;
-                grouped[date] += parseFloat(t.value);
-            });
-
-            const labels = Object.keys(grouped);
-            const data = Object.values(grouped);
-
-            chartInstance = new Chart(ctx, {
-                type: "line",
-                data: {
-                    labels,
-                    datasets: [
-                        {
-                            label: "Ganhos por Data",
-                            data,
-                            fill: true,
-                            borderColor: "#4F46E5",
-                            backgroundColor: "rgba(79, 70, 229, 0.2)",
-                            tension: 0.3,
-                        },
-                    ],
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        x: { title: { display: true, text: "Data" } },
-                        y: { title: { display: true, text: "Valor (R$)" } },
-                    },
-                },
-            });
         },
     },
     computed: {
@@ -114,22 +63,62 @@ export default {
 </script>
 
 <template>
-    <main
-        class="m-7 border border-2 border-gray-700 rounded-xl h-[100dvh] md:h-full"
-    >
+    <main class="m-4 h-[100dvh] md:h-full">
         <header class="mx-3 py-5 flex justify-between items-center">
-            <a href="/" class="uppercase font-bold text-2xl">Dashboard</a>
-            <a href="#">
-                <img
-                    class="rounded-full border border-2"
-                    src="https://randomuser.me/api/portraits/men/3.jpg"
-                    width="40"
-                    alt="icon-user"
-                />
-            </a>
+            <a href="/" class="uppercase font-bold hover:text-gray-300 text-2xl"
+                >Dashboard</a
+            >
+            <div class="flex items-center gap-5">
+                <a
+                    @click.prevent="showModal = true"
+                    href="#addTransaction"
+                    class="hidden md:flex gap-1 items-center bg-purple-500 hover:bg-purple-800 rounded-full text-center py-2 px-3"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-patch-plus-fill"
+                        viewBox="0 0 16 16"
+                    >
+                        <path
+                            d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01zM8.5 6v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 1 0"
+                        />
+                    </svg>
+                    <small>Adicionar</small>
+                </a>
+
+                <a
+                    href="/graficos"
+                    class="hidden md:flex gap-1 items-center bg-gray-800 hover:bg-gray-700 rounded-full text-center py-2 px-3"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-calendar"
+                        viewBox="0 0 16 16"
+                    >
+                        <path
+                            d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"
+                        />
+                    </svg>
+                    <small>Gráfico</small>
+                </a>
+                <a href="#">
+                    <img
+                        class="rounded-full border border-2"
+                        src="https://randomuser.me/api/portraits/men/3.jpg"
+                        width="40"
+                        alt="icon-user"
+                    />
+                </a>
+            </div>
         </header>
         <section
-            class="mx-3 py-7 h-[90dvh] md:h-full flex flex-col justify-between md:gap-4"
+            class="mx-3 py-5 h-[90dvh] md:h-full flex flex-col justify-between md:gap-4"
         >
             <div>
                 <article>
@@ -147,26 +136,17 @@ export default {
                     </p>
                 </article>
 
-                <section class="hidden md:block mx-3 py-7">
-                    <div v-if="haveTransaction">
-                        <canvas
-                            ref="chartRef"
-                            width="400"
-                            height="300"
-                        ></canvas>
-                    </div>
-                    <div v-else class="text-center text-gray-500 py-10">
-                        <p class="text-lg">
-                            Ainda não coletamos informações para o seu gráfico.
-                        </p>
-                    </div>
-                </section>
-
                 <aside>
-                    <div class="flex justify-between text-gray-600 py-3">
-                        <p>Transações</p>
-                        <a href="#all">Ver todas</a>
+                    <div class="flex justify-between items-center">
+                        <p class="text-gray-600 pt-3">Transações</p>
+                        <button
+                            @click.prevent="showFilters = !showFilters"
+                            class="cursor-pointer text-gray-600 hover:text-gray-400"
+                        >
+                            filtro
+                        </button>
                     </div>
+                    <div :class="showFilters ? `block` : `hidden`">quebra</div>
 
                     <div
                         v-if="!haveTransaction"
@@ -189,7 +169,7 @@ export default {
                     <div
                         v-else
                         id="showTransactions"
-                        class="h-[50dvh] overflow-auto"
+                        class="h-[60dvh] overflow-auto"
                     >
                         <TransactionView
                             v-for="(transaction, index) in dataTransactions"
@@ -204,7 +184,7 @@ export default {
                 <a
                     @click.prevent="showModal = true"
                     href="#addTransaction"
-                    class="flex flex-col items-center justify-center gap-2"
+                    class="flex md:hidden flex-col hover:bg-purple-800 items-center justify-center gap-2"
                 >
                     <div
                         class="grid place-items-center bg-purple-500 text-center rounded-full size-12 text-3xl"
@@ -215,9 +195,8 @@ export default {
                 </a>
 
                 <a
-                    @click.prevent="showChartModal = true"
-                    href="#addTransaction"
-                    class="md:hidden flex flex-col items-center justify-center gap-2"
+                    href="/graficos"
+                    class="flex md:hidden flex-col items-center justify-center gap-2 hover:bg-gray-700"
                 >
                     <div
                         class="grid place-items-center bg-gray-800 text-center rounded-full size-12 text-3xl"
@@ -242,5 +221,4 @@ export default {
     </main>
 
     <CreateTransaction :show="showModal" @close="showModal = false" />
-    <ChartTransactions :show="showChartModal" @close="showChartModal = false" />
 </template>
