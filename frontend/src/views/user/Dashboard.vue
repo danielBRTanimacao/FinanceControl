@@ -40,8 +40,10 @@ export default {
                     }
                 );
                 this.dataTransactions = response.data;
-                this.haveTransaction = true;
-                this.renderChart();
+                this.haveTransaction = this.dataTransactions.length > 0;
+                if (this.haveTransaction) {
+                    this.renderChart();
+                }
             } catch (e) {
                 console.log("Erro " + e);
                 this.haveTransaction = false;
@@ -89,19 +91,20 @@ export default {
         totalFilteredValue() {
             if (!this.dataTransactions.length) return 0;
 
-            return this.dataTransactions
-                .filter((t) => {
-                    if (this.filterType === "earns")
-                        return t.category?.name === "GANHEI";
-                    else return t.category?.name !== "GANHEI";
-                })
-                .reduce((sum, t) => {
-                    const value = parseFloat(t.value);
-                    return this.filterType === "earns"
-                        ? sum + value
-                        : sum - value;
-                }, 0)
-                .toFixed(2);
+            const filtered = this.dataTransactions.filter((t) => {
+                if (this.filterType === "earns") {
+                    return t.value > 0;
+                } else {
+                    return t.value < 0;
+                }
+            });
+
+            const total = filtered.reduce(
+                (sum, t) => sum + parseFloat(t.value),
+                0
+            );
+
+            return Math.abs(total).toFixed(2);
         },
     },
 };
@@ -140,14 +143,28 @@ export default {
                         $<span class="typeValue">{{ totalFilteredValue }}</span>
                     </p>
                 </article>
+
                 <section class="hidden md:block mx-3 py-7">
-                    <canvas ref="chartRef" width="400" height="300"></canvas>
+                    <div v-if="haveTransaction">
+                        <canvas
+                            ref="chartRef"
+                            width="400"
+                            height="300"
+                        ></canvas>
+                    </div>
+                    <div v-else class="text-center text-gray-500 py-10">
+                        <p class="text-lg">
+                            Ainda não coletamos informações para o seu gráfico.
+                        </p>
+                    </div>
                 </section>
+
                 <aside>
                     <div class="flex justify-between text-gray-600 py-3">
                         <p>Transações</p>
                         <a href="#all">Ver todas</a>
                     </div>
+
                     <div
                         v-if="!haveTransaction"
                         class="flex flex-col justify-center items-center"
@@ -165,6 +182,7 @@ export default {
                             ADICIONE UMA!
                         </h2>
                     </div>
+
                     <div
                         v-else
                         id="showTransactions"
@@ -178,6 +196,7 @@ export default {
                     </div>
                 </aside>
             </div>
+
             <div class="flex justify-evenly">
                 <a
                     @click.prevent="showModal = true"
@@ -191,6 +210,7 @@ export default {
                     </div>
                     <small>Adicionar transação</small>
                 </a>
+
                 <a
                     @click.prevent="showChartModal = true"
                     href="#addTransaction"
@@ -217,6 +237,7 @@ export default {
             </div>
         </section>
     </main>
+
     <CreateTransaction :show="showModal" @close="showModal = false" />
     <ChartTransactions :show="showChartModal" @close="showChartModal = false" />
 </template>
