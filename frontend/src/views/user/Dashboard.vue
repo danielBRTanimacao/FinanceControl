@@ -1,7 +1,6 @@
 <script>
 import TransactionView from "@/components/dashboard/TransactionView.vue";
 import CreateTransaction from "@/components/modal/CreateTransaction.vue";
-import ChartTransactions from "@/components/modal/ChartTransactions.vue";
 import emptImage from "../../assets/imgs/svgs/empty.svg";
 import axios from "axios";
 import { getCookie } from "@/utils/authUtils";
@@ -69,6 +68,31 @@ export default {
                 >Dashboard</a
             >
             <div class="flex items-center gap-5">
+                <div
+                    class="hidden md:flex items-center border-b border-gray-400 hover:border-gray-100"
+                >
+                    <label for="searchTransaction" class="text-gray-400">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-search"
+                            viewBox="0 0 16 16"
+                        >
+                            <path
+                                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"
+                            />
+                        </svg>
+                    </label>
+                    <input
+                        placeholder="procurar transação..."
+                        class="py-2 px-4 outline-0"
+                        type="search"
+                        name="q"
+                        id="searchTransaction"
+                    />
+                </div>
                 <a
                     @click.prevent="showModal = true"
                     href="#addTransaction"
@@ -146,7 +170,26 @@ export default {
                             filtro
                         </button>
                     </div>
-                    <div :class="showFilters ? `block` : `hidden`">quebra</div>
+                    <div :class="showFilters ? `block` : `hidden`">
+                        <div>
+                            <input
+                                type="radio"
+                                id="mostRecentDate"
+                                name="filter_chosed"
+                                value=""
+                            />
+                            <!--Adicionar valor aqui-->
+                            <label for="mostRecentDate">Data recente</label>
+                            <br />
+                            <input
+                                type="radio"
+                                id="pastDate"
+                                name="filter_chosed"
+                                value=""
+                            />
+                            <label for="pastDate">Data Passada</label><br />
+                        </div>
+                    </div>
 
                     <div
                         v-if="!haveTransaction"
