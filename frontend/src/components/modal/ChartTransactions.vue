@@ -24,7 +24,6 @@ const fetchDataAndRenderChart = async () => {
 
         const data = response.data;
 
-        // Agrupar valores por earnedDate
         const groupedByDate = {};
         data.forEach((t) => {
             const date = t.earnedDate || "Sem data";
@@ -38,7 +37,7 @@ const fetchDataAndRenderChart = async () => {
         if (chartInstance) chartInstance.destroy();
 
         chartInstance = new Chart(chartRef.value, {
-            type: "line", // ou "bar"
+            type: "line",
             data: {
                 labels,
                 datasets: [

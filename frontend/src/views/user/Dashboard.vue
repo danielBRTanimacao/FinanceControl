@@ -4,6 +4,10 @@ import CreateTransaction from "@/components/modal/CreateTransaction.vue";
 import ChartTransactions from "@/components/modal/ChartTransactions.vue";
 import emptImage from "../../assets/imgs/svgs/empty.svg";
 import axios from "axios";
+import Chart from "chart.js/auto";
+import { getCookie } from "@/utils/authUtils";
+
+let chartInstance = null;
 
 export default {
     data() {
@@ -21,30 +25,64 @@ export default {
         CreateTransaction,
         ChartTransactions,
     },
-    async created() {
-        await this.fetchTransactions();
+    mounted() {
+        this.fetchTransactions();
     },
     methods: {
         async fetchTransactions() {
             try {
-                console.log(localStorage.getItem("token"));
                 const response = await axios.get(
-                    "http://127.0.0.1:8080/api/dashboard?max=5",
+                    "http://127.0.0.1:8080/api/dashboard?max=20",
                     {
                         headers: {
-                            Authorization: `Bearer ${localStorage.getItem(
-                                "token"
-                            )}`,
+                            Authorization: `Bearer ${getCookie("token")}`,
                         },
                     }
                 );
-                console.log(response);
                 this.dataTransactions = response.data;
                 this.haveTransaction = true;
+                this.renderChart();
             } catch (e) {
                 console.log("Erro " + e);
                 this.haveTransaction = false;
             }
+        },
+
+        renderChart() {
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+
+            const ctx = this.$refs.chartRef;
+            if (!ctx) return;
+
+            const labels = this.dataTransactions.map((t) => t.date);
+
+            chartInstance = new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels,
+                    datasets: [
+                        {
+                            label: "Ganhos por Data",
+                            data: this.dataTransactions.map((t) =>
+                                parseFloat(t.value)
+                            ),
+                            fill: true,
+                            borderColor: "#4F46E5",
+                            backgroundColor: "rgba(79, 70, 229, 0.2)",
+                            tension: 0.3,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: { title: { display: true, text: "Data" } },
+                        y: { title: { display: true, text: "Valor (R$)" } },
+                    },
+                },
+            });
         },
     },
     computed: {
@@ -70,7 +108,9 @@ export default {
 </script>
 
 <template>
-    <main class="m-7 border border-2 border-gray-700 rounded-xl h-[100dvh]">
+    <main
+        class="m-7 border border-2 border-gray-700 rounded-xl h-[100dvh] md:h-full"
+    >
         <header class="mx-3 py-5 flex justify-between items-center">
             <a href="/" class="uppercase font-bold text-2xl">Dashboard</a>
             <a href="#">
@@ -82,7 +122,9 @@ export default {
                 />
             </a>
         </header>
-        <section class="mx-3 py-7 h-[90dvh] flex flex-col justify-between">
+        <section
+            class="mx-3 py-7 h-[90dvh] md:h-full flex flex-col justify-between md:gap-4"
+        >
             <div>
                 <article>
                     <select
@@ -97,12 +139,15 @@ export default {
                     <p class="text-3xl">
                         $<span class="typeValue">{{ totalFilteredValue }}</span>
                     </p>
+                </article>
+                <section class="hidden md:block mx-3 py-7">
+                    <canvas ref="chartRef" width="400" height="300"></canvas>
+                </section>
+                <aside>
                     <div class="flex justify-between text-gray-600 py-3">
                         <p>Transações</p>
                         <a href="#all">Ver todas</a>
                     </div>
-                </article>
-                <aside>
                     <div
                         v-if="!haveTransaction"
                         class="flex flex-col justify-center items-center"
@@ -149,7 +194,7 @@ export default {
                 <a
                     @click.prevent="showChartModal = true"
                     href="#addTransaction"
-                    class="flex flex-col items-center justify-center gap-2"
+                    class="md:hidden flex flex-col items-center justify-center gap-2"
                 >
                     <div
                         class="grid place-items-center bg-gray-800 text-center rounded-full size-12 text-3xl"
