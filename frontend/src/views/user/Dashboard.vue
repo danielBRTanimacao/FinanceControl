@@ -58,7 +58,16 @@ export default {
             const ctx = this.$refs.chartRef;
             if (!ctx) return;
 
-            const labels = this.dataTransactions.map((t) => t.date);
+            // Agrupar por data e somar os valores
+            const grouped = {};
+            this.dataTransactions.forEach((t) => {
+                const date = t.earnedDate;
+                if (!grouped[date]) grouped[date] = 0;
+                grouped[date] += parseFloat(t.value);
+            });
+
+            const labels = Object.keys(grouped);
+            const data = Object.values(grouped);
 
             chartInstance = new Chart(ctx, {
                 type: "line",
@@ -67,9 +76,7 @@ export default {
                     datasets: [
                         {
                             label: "Ganhos por Data",
-                            data: this.dataTransactions.map((t) =>
-                                parseFloat(t.value)
-                            ),
+                            data,
                             fill: true,
                             borderColor: "#4F46E5",
                             backgroundColor: "rgba(79, 70, 229, 0.2)",
@@ -92,11 +99,7 @@ export default {
             if (!this.dataTransactions.length) return 0;
 
             const filtered = this.dataTransactions.filter((t) => {
-                if (this.filterType === "earns") {
-                    return t.value > 0;
-                } else {
-                    return t.value < 0;
-                }
+                return this.filterType === "earns" ? t.value > 0 : t.value < 0;
             });
 
             const total = filtered.reduce(
