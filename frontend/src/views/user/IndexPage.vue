@@ -12,7 +12,7 @@ import { isLoggedIn } from "@/utils/authUtils";
                 <h1 class="text-3xl font-bold text-blue-700">
                     Finance Control
                 </h1>
-                <div v-if="!isLoggedIn" class="flex gap-3">
+                <div v-if="!isLoggedIn()" class="flex gap-3">
                     <a
                         href="/login"
                         class="text-white bg-blue-600 hover:bg-blue-700 px-5 py-2 rounded-full transition"
@@ -51,7 +51,7 @@ import { isLoggedIn } from "@/utils/authUtils";
                         financeiro com facilidade.
                     </p>
                     <a
-                        v-if="!isLoggedIn"
+                        v-if="!isLoggedIn()"
                         href="/registro"
                         class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-full text-lg transition block w-fit"
                         >Criar conta gratuita</a

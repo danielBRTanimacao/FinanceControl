@@ -1,10 +1,20 @@
 <script>
+import UpdateTransaction from "../modal/UpdateTransaction.vue";
+
 export default {
     props: {
         data: {
             type: Object,
             required: true,
         },
+    },
+    components: {
+        UpdateTransaction,
+    },
+    data() {
+        return {
+            showModal: false,
+        };
     },
 };
 </script>
@@ -29,7 +39,10 @@ export default {
             </p>
         </div>
         <div class="me-2">
-            <button class="cursor-pointer text-gray-400 hover:text-gray-200">
+            <button
+                @click="showModal = true"
+                class="cursor-pointer text-gray-400 hover:text-gray-200"
+            >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="20"
@@ -49,4 +62,9 @@ export default {
             </button>
         </div>
     </div>
+    <UpdateTransaction
+        :show="showModal"
+        :data="data"
+        @close="showModal = false"
+    />
 </template>
