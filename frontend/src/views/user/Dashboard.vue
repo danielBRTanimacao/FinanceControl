@@ -14,6 +14,7 @@ export default {
             showModal: false,
             showFilters: false,
             filterType: "earns",
+            serchTransaction: "",
         };
     },
     components: {
@@ -91,6 +92,7 @@ export default {
                         type="search"
                         name="q"
                         id="searchTransaction"
+                        v-bind="serchTransaction"
                     />
                 </div>
                 <a
